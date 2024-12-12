@@ -1,10 +1,12 @@
 const express = require("express");
-const routes = express.Router();
-const authRoutes = require("./auth_routes");
+const router = express.Router();
+const usersController = require("../controllers/users_controller");
+const authMiddleware = require("../middleware/auth");
 
-routes.use("/auth", authRoutes);
+router.get("/users", authMiddleware, usersController.getAllUsers);
+router.get("/users/:id", authMiddleware, usersController.getUserById);
+router.post("/users", authMiddleware, usersController.createUser);
+router.put("/users/:id", authMiddleware, usersController.updateUser);
+router.delete("/users/:id", authMiddleware, usersController.deleteUser);
 
-// tambahkan rute lainnya dibawah seperti:
-// routes.use('/users', usersRoutes);
-
-module.exports = routes;
+module.exports = router;

@@ -1,20 +1,16 @@
+require("dotenv").config();
 const express = require("express");
-const bodyParser = require("body-parser");
-const webRoutes = require("./routes/web");
-
 const app = express();
 
-const port = 3001;
+app.use(express.json());
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const authRoutes = require("./routes/auth_routes");
+const webRoutes = require("./routes/web.js");
 
+app.use("/auth", authRoutes);
 app.use("/web", webRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
